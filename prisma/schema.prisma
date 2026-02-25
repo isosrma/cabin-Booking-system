@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role {
+  USER
+  ADMIN
+}
+enum BookingStatus {
+  UNCONFIRMED
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+}
+model User {
+  id               Int      @id @default(autoincrement())
+  fullName         String
+  email            String   @unique
+  password         String
+  role             Role     @default(USER)
+
+  phoneNumber      String?
+  nationality      String?
+  profileImage     String?
+
+  otp              String?
+  otpGeneratedTime DateTime?
+
+  createdAt        DateTime @default(now())
+  bookings         Booking[] @relation("UserBookings")
+
+}
+
+
+model Cabin {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+
+  name          String
+  maxCapacity   Int
+  regularPrice  Int
+  discount      Int      @default(0)
+  description   String?
+  image         String?
+  bookings      Booking[]
+}
+
+model Booking {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+
+  startDate    DateTime
+  endDate      DateTime
+  numNights    Int
+  numGuests    Int
+
+  cabinPrice   Float
+  extrasPrice  Float
+  totalPrice   Float
+
+  hasBreakfast Boolean        @default(false)
+  status       BookingStatus  @default(UNCONFIRMED)
+
+  observations String?
+
+  cabinId String
+  userId  Int
+  staffId Int?
+
+  cabin   Cabin @relation(fields: [cabinId], references: [id])
+  user    User  @relation("UserBookings", fields: [userId], references: [id])
+
+}
