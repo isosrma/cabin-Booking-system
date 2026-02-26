@@ -4,6 +4,7 @@ import cabinRoutes from "./routes/cabin.route.js";
 import authRoutes from "./routes/user.route.js";
 import { connectDB } from "./database.js";
 import bookingRoutes from './routes/booking.route.js';
+import paymentRoutes from './routes/payment.Routes.js';
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/cabins", cabinRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/payments", paymentRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

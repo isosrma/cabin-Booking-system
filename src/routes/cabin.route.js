@@ -5,7 +5,7 @@ import { accessTo, protectedRoutes } from "../middleware/protectedRoutes.js";
 
 
 const router = express.Router();
-router.post("/", protectedRoutes, accessTo("USER"), cabinUpload, createCabin);
+router.post("/", protectedRoutes, accessTo("ADMIN"), cabinUpload, createCabin);   //admin or user change garney 
 router.get("/",getCabin); 
 router.get("/:id", getCabinById);
 router.patch("/:id", cabinUpload, updateCabin);

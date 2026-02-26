@@ -3,7 +3,7 @@ import { accessTo, protectedRoutes } from "../middleware/protectedRoutes.js";
 import { createBooking, deleteBooking, getAllBookings, getOwnBooking, updateBooking, updateBookingStatus } from "../controller/booking.controller.js";
 
 const router = express.Router();
-router.post("/",protectedRoutes,accessTo("USER"),createBooking);
+router.post("/",protectedRoutes,accessTo("ADMIN"),createBooking);
 router.get("/",protectedRoutes,accessTo("ADMIN"),getAllBookings);
 router.patch("/:id",protectedRoutes,accessTo("ADMIN"),updateBooking);
 router.delete("/:id",protectedRoutes,accessTo("ADMIN"),deleteBooking);
