@@ -17,6 +17,16 @@ enum BookingStatus {
   CHECKED_OUT
   CANCELLED
 }
+enum PaymentMethod {
+  KHALTI
+  COD
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
 model User {
   id               Int      @id @default(autoincrement())
   fullName         String
@@ -71,8 +81,23 @@ model Booking {
   cabinId String
   userId  Int
   staffId Int?
+  payment Payment?
 
   cabin   Cabin @relation(fields: [cabinId], references: [id])
   user    User  @relation("UserBookings", fields: [userId], references: [id])
+
+}
+
+model Payment {
+  id              String         @id @default(uuid())
+  bookingId      Int        @unique
+  booking          Booking        @relation(fields: [bookingId], references: [id] ,onDelete:Cascade)
+  paymentMethod   PaymentMethod
+  amount          Float
+  status          PaymentStatus  @default(PENDING)
+  paymentDate     DateTime?
+
+  pidx            String?        @unique  
+  transactionId   String?       
 
 }
